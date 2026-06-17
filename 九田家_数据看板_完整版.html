@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>九田家 · 春节运营数据智能看板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #000000;
+    --surface: #0d0d0d;
+    --card: #121214;
+    --card-hover: #1a1a1e;
+    --border: rgba(255,255,255,0.06);
+    --text: #ffffff;
+    --text-secondary: rgba(255,255,255,0.6);
+    --text-tertiary: rgba(255,255,255,0.35);
+    --blue: #2997FF;
+    --purple: #BF5AF2;
+    --green: #30D158;
+    --orange: #FF9F0A;
+    --red: #FF453A;
+    --gradient-hero: linear-gradient(135deg, #2997FF 0%, #BF5AF2 50%, #FF453A 100%);
+    --section: 100px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans SC', -apple-system, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ===== HERO ANIMATIONS ===== */
+  .hero-glow {
+    position: absolute;
+    top: -300px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1200px;
+    height: 1200px;
+    background: radial-gradient(circle, rgba(41,151,255,0.15) 0%, rgba(191,90,242,0.08) 30%, rgba(255,69,58,0.04) 50%, transparent 70%);
+    pointer-events: none;
+    animation: glowBreathe 4s ease-in-out infinite;
+  }
+
+  @keyframes glowBreathe {
+    0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.25;
+    background-image:
+      linear-gradient(rgba(41,151,255,0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(41,151,255,0.3) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridDrift 12s linear infinite;
+  }
+
+  @keyframes gridDrift {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+
+  .particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: rgba(41,151,255,0.8);
+    border-radius: 50%;
+    box-shadow: 0 0 8px 2px rgba(41,151,255,0.4);
+    animation: floatUp linear infinite;
+  }
+
+  .particle:nth-child(1) { left: 8%; animation-duration: 10s; animation-delay: 0s; }
+  .particle:nth-child(2) { left: 18%; animation-duration: 14s; animation-delay: 1s; width: 4px; height: 4px; background: rgba(191,90,242,0.9); box-shadow: 0 0 10px 3px rgba(191,90,242,0.5); }
+  .particle:nth-child(3) { left: 28%; animation-duration: 9s; animation-delay: 3s; width: 2px; height: 2px; background: rgba(48,209,88,0.8); box-shadow: 0 0 6px 2px rgba(48,209,88,0.4); }
+  .particle:nth-child(4) { left: 38%; animation-duration: 16s; animation-delay: 0.5s; width: 5px; height: 5px; background: rgba(255,159,10,0.8); box-shadow: 0 0 12px 4px rgba(255,159,10,0.4); }
+  .particle:nth-child(5) { left: 48%; animation-duration: 11s; animation-delay: 2s; width: 3px; height: 3px; background: rgba(255,69,58,0.8); box-shadow: 0 0 8px 2px rgba(255,69,58,0.4); }
+  .particle:nth-child(6) { left: 58%; animation-duration: 13s; animation-delay: 4s; width: 4px; height: 4px; background: rgba(41,151,255,0.9); box-shadow: 0 0 10px 3px rgba(41,151,255,0.5); }
+  .particle:nth-child(7) { left: 68%; animation-duration: 15s; animation-delay: 1.5s; width: 2px; height: 2px; background: rgba(191,90,242,0.8); box-shadow: 0 0 6px 2px rgba(191,90,242,0.4); }
+  .particle:nth-child(8) { left: 78%; animation-duration: 12s; animation-delay: 3.5s; width: 5px; height: 5px; background: rgba(48,209,88,0.9); box-shadow: 0 0 12px 4px rgba(48,209,88,0.5); }
+  .particle:nth-child(9) { left: 88%; animation-duration: 10s; animation-delay: 5s; width: 3px; height: 3px; background: rgba(255,159,10,0.8); box-shadow: 0 0 8px 2px rgba(255,159,10,0.4); }
+  .particle:nth-child(10) { left: 95%; animation-duration: 17s; animation-delay: 2.5s; width: 4px; height: 4px; background: rgba(255,69,58,0.9); box-shadow: 0 0 10px 3px rgba(255,69,58,0.5); }
+  .particle:nth-child(11) { left: 5%; animation-duration: 18s; animation-delay: 6s; width: 3px; height: 3px; background: rgba(41,151,255,0.8); box-shadow: 0 0 8px 2px rgba(41,151,255,0.4); }
+  .particle:nth-child(12) { left: 15%; animation-duration: 20s; animation-delay: 7s; width: 2px; height: 2px; background: rgba(191,90,242,0.8); box-shadow: 0 0 6px 2px rgba(191,90,242,0.4); }
+  .particle:nth-child(13) { left: 25%; animation-duration: 8s; animation-delay: 1s; width: 4px; height: 4px; background: rgba(255,159,10,0.9); box-shadow: 0 0 10px 3px rgba(255,159,10,0.5); }
+  .particle:nth-child(14) { left: 35%; animation-duration: 14s; animation-delay: 4.5s; width: 3px; height: 3px; background: rgba(48,209,88,0.8); box-shadow: 0 0 8px 2px rgba(48,209,88,0.4); }
+  .particle:nth-child(15) { left: 45%; animation-duration: 11s; animation-delay: 5.5s; width: 5px; height: 5px; background: rgba(255,69,58,0.9); box-shadow: 0 0 12px 4px rgba(255,69,58,0.5); }
+
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+    5% { opacity: 1; }
+    95% { opacity: 1; }
+    100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
+  }
+
+  .scan-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(41,151,255,0.6), rgba(191,90,242,0.6), rgba(255,159,10,0.4), transparent);
+    box-shadow: 0 0 20px 2px rgba(41,151,255,0.3);
+    animation: scanDown 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes scanDown {
+    0%, 100% { top: 0; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+
+  /* ===== DATA STREAM EFFECT ===== */
+  .data-stream {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0.08;
+  }
+
+  .data-stream::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(41,151,255,0.15) 2px,
+      rgba(41,151,255,0.15) 4px
+    );
+    animation: dataStream 0.5s linear infinite;
+  }
+
+  @keyframes dataStream {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+  }
+
+  /* ===== PULSE RING ===== */
+  .pulse-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border: 1px solid rgba(41,151,255,0.2);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: pulseRing 3s ease-out infinite;
+  }
+
+  .pulse-ring:nth-child(2) {
+    width: 500px;
+    height: 500px;
+    animation-delay: 1s;
+    border-color: rgba(191,90,242,0.15);
+  }
+
+  .pulse-ring:nth-child(3) {
+    width: 700px;
+    height: 700px;
+    animation-delay: 2s;
+    border-color: rgba(255,159,10,0.1);
+  }
+
+  @keyframes pulseRing {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+  }
+
+  /* ===== CARD HOVER GLOW ===== */
+  .kpi-card:hover,
+  .chart-card:hover,
+  .insight-card:hover {
+    box-shadow: 0 0 30px rgba(41,151,255,0.1), 0 0 60px rgba(191,90,242,0.05);
+  }
+
+  /* ===== TOP 3 TABLE HIGHLIGHT ===== */
+  .table-row.top-1 {
+    background: linear-gradient(135deg, rgba(255,159,10,0.08), rgba(255,159,10,0.02));
+    border-left: 3px solid #FF9F0A;
+    position: relative;
+  }
+
+  .table-row.top-1::before,
+  .table-row.top-2::before,
+  .table-row.top-3::before {
+    content: '🥇';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+  }
+
+  .table-row.top-2::before { content: '🥈'; }
+  .table-row.top-3::before { content: '🥉'; }
+
+  .table-row.top-1:hover,
+  .table-row.top-2:hover,
+  .table-row.top-3:hover {
+    background: linear-gradient(135deg, rgba(255,159,10,0.14), rgba(255,159,10,0.04));
+  }
+
+  .table-row.top-1,
+  .table-row.top-2,
+  .table-row.top-3 {
+    background: linear-gradient(135deg, rgba(255,159,10,0.08), rgba(255,159,10,0.02));
+    border-left: 3px solid #FF9F0A;
+  }
+
+  .table-row.top-1 .table-cell,
+  .table-row.top-2 .table-cell,
+  .table-row.top-3 .table-cell { color: #fff; }
+
+  .table-row.top-1 .table-cell.name,
+  .table-row.top-2 .table-cell.name,
+  .table-row.top-3 .table-cell.name { color: #FF9F0A; font-weight: 700; }
+
+  .table-row.top-1 .table-cell.num,
+  .table-row.top-2 .table-cell.num,
+  .table-row.top-3 .table-cell.num { color: #FF9F0A; font-weight: 600; }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(41,151,255,0.3), rgba(191,90,242,0.3), rgba(255,159,10,0.2), transparent);
+  }
+
+  /* ===== SECTION BG EFFECTS (shared with Hero) ===== */
+  .section-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .section-bg .bg-glow {
+    position: absolute;
+    top: -300px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(41,151,255,0.08) 0%, rgba(191,90,242,0.04) 30%, transparent 60%);
+    pointer-events: none;
+    animation: glowBreathe 5s ease-in-out infinite;
+  }
+
+  .section-bg .bg-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.1;
+    background-image:
+      linear-gradient(rgba(41,151,255,0.2) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(41,151,255,0.2) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridDrift 18s linear infinite;
+  }
+
+  .section-bg .bg-data {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0.04;
+  }
+
+  .section-bg .bg-data::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(41,151,255,0.15) 2px,
+      rgba(41,151,255,0.15) 4px
+    );
+    animation: dataStream 0.8s linear infinite;
+  }
+
+  .section-bg .bg-scan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(41,151,255,0.3), rgba(191,90,242,0.3), transparent);
+    animation: scanDown 7s ease-in-out infinite;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  /* Position parent relative for absolute bg */
+  .section-bg-container {
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-title {
+    font-size: clamp(44px, 7vw, 80px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-title .gradient {
+    background: var(--gradient-hero);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 560px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 1;
+  }
+
+  .hero-scroll span {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .hero-scroll-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--text-tertiary);
+    animation: scrollPulse 2s infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* ===== SECTION REVEAL ANIMATIONS ===== */
+  .section-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+  }
+  .section {
+    padding: var(--section) 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ===== KPI COUNT-UP ===== */
+  .kpi-value {
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 6px;
+    position: relative;
+    display: inline-block;
+    /* 1. Shimmer sweep across text */
+    background: linear-gradient(
+      135deg,
+      currentColor 0%,
+      rgba(255,255,255,0.85) 40%,
+      rgba(255,255,255,0.95) 50%,
+      rgba(255,255,255,0.85) 60%,
+      currentColor 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 300% 300%;
+    /* 2. Holographic chromatic aberration */
+    text-shadow:
+      1px 0 0 rgba(255,60,60,0.3),
+      -1px 0 0 rgba(60,200,255,0.3);
+    /* 3. Two animations */
+    animation:
+      shimmerSweep 4s ease-in-out infinite,
+      floatBreathe 3s ease-in-out infinite,
+      chromaShift 5s ease-in-out infinite;
+  }
+
+  @keyframes shimmerSweep {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 80% 80%; }
+    100% { background-position: 0% 0%; }
+  }
+
+  @keyframes floatBreathe {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+
+  @keyframes chromaShift {
+    0%, 100% { text-shadow: 1px 0 0 rgba(255,60,60,0.25), -1px 0 0 rgba(60,200,255,0.25); }
+    25% { text-shadow: 2px 0 0 rgba(255,60,60,0.35), -1px 0 0 rgba(60,200,255,0.15); }
+    50% { text-shadow: 0px 0 0 rgba(255,60,60,0.10), -2px 0 0 rgba(60,200,255,0.35); }
+    75% { text-shadow: 1px 0 0 rgba(255,60,60,0.30), -1px 0 0 rgba(60,200,255,0.20); }
+  }
+
+  /* 4. Pulse indicator dot */
+  .kpi-card {
+    background: var(--card);
+    padding: 40px 32px;
+    text-align: center;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulseDot 2s ease-in-out infinite;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .kpi-card.visible::after {
+    opacity: 0.8;
+  }
+
+  @keyframes pulseDot {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(48,209,88,0.6);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(48,209,88,0);
+      transform: scale(0.85);
+    }
+  }
+
+  .kpi-card:nth-child(1) { animation-delay: 0.1s; }
+  .kpi-card:nth-child(2) { animation-delay: 0.2s; }
+  .kpi-card:nth-child(3) { animation-delay: 0.3s; }
+  .kpi-card:nth-child(4) { animation-delay: 0.4s; }
+
+  /* ===== CHART CARD ENTRANCE ===== */
+  .chart-card {
+    background: var(--card);
+    padding: 36px 32px;
+    transition: background 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    transition: left 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+  }
+
+  .chart-card.visible::before {
+    left: 0;
+  }
+
+  /* ===== INSIGHT CARD ENTRANCE ===== */
+  .insight-card {
+    background: var(--card);
+    padding: 32px 28px;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .insight-card.visible {
+    animation: cardSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .insight-card:nth-child(1).visible { animation-delay: 0.1s; }
+  .insight-card:nth-child(2).visible { animation-delay: 0.25s; }
+  .insight-card:nth-child(3).visible { animation-delay: 0.4s; }
+
+  @keyframes cardSlideIn {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== TABLE ROW ENTRANCE ===== */
+  .table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 14px 28px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+
+  .table-row.visible {
+    animation: rowSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes rowSlideIn {
+    0% { opacity: 0; transform: translateX(-10px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  .table-row:nth-child(2).visible { animation-delay: 0.05s; }
+  .table-row:nth-child(3).visible { animation-delay: 0.1s; }
+  .table-row:nth-child(4).visible { animation-delay: 0.15s; }
+  .table-row:nth-child(5).visible { animation-delay: 0.2s; }
+  .table-row:nth-child(6).visible { animation-delay: 0.25s; }
+  .table-row:nth-child(7).visible { animation-delay: 0.3s; }
+  .table-row:nth-child(8).visible { animation-delay: 0.35s; }
+  .table-row:nth-child(9).visible { animation-delay: 0.4s; }
+  .table-row:nth-child(10).visible { animation-delay: 0.45s; }
+  .table-row:nth-child(11).visible { animation-delay: 0.5s; }
+  .table-row:nth-child(12).visible { animation-delay: 0.55s; }
+  .table-row:nth-child(13).visible { animation-delay: 0.6s; }
+  .table-row:nth-child(14).visible { animation-delay: 0.65s; }
+  .table-row:nth-child(15).visible { animation-delay: 0.7s; }
+  .table-row:nth-child(16).visible { animation-delay: 0.75s; }
+  .table-row:nth-child(17).visible { animation-delay: 0.8s; }
+  .table-row:nth-child(18).visible { animation-delay: 0.85s; }
+  .table-row:nth-child(19).visible { animation-delay: 0.9s; }
+  .table-row:nth-child(20).visible { animation-delay: 0.95s; }
+  .table-row:nth-child(21).visible { animation-delay: 1.0s; }
+
+  /* ===== SECTION TITLE GLOW ===== */
+  .section-title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 48px;
+    line-height: 1.15;
+    position: relative;
+    display: inline-block;
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--gradient-hero);
+    border-radius: 2px;
+    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+  }
+
+  .section-title.visible::after {
+    width: 80px;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+
+  .kpi-card {
+    background: var(--card);
+    padding: 40px 32px;
+    text-align: center;
+    transition: background 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card:hover { background: var(--card-hover); transform: translateY(-2px); }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .kpi-card:hover::before { opacity: 0.5; }
+
+  .kpi-value {
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .kpi-value.blue { color: var(--blue); }
+  .kpi-value.purple { color: var(--purple); }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.orange { color: var(--orange); }
+  .kpi-value.red { color: var(--red); }
+
+  .kpi-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+
+  .kpi-trend {
+    font-size: 12px;
+    margin-top: 10px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.5px;
+  }
+
+  .kpi-trend.up { color: var(--green); }
+  .kpi-trend.down { color: var(--red); }
+
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+
+  .chart-card {
+    background: var(--card);
+    padding: 36px 32px;
+    transition: background 0.3s;
+  }
+
+  .chart-card:hover { background: var(--card-hover); }
+
+  .chart-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .chart-sub {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin-bottom: 28px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.3px;
+  }
+
+  .chart-wrap {
+    position: relative;
+    height: 280px;
+  }
+
+  .insight-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+
+  .insight-card {
+    background: var(--card);
+    padding: 32px 28px;
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  .insight-card:hover { background: var(--card-hover); transform: translateY(-2px); }
+
+  .insight-icon {
+    font-size: 22px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .insight-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .insight-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .insight-stat {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 14px;
+    padding: 4px 12px;
+    border-radius: 6px;
+  }
+
+  .insight-stat.blue { background: rgba(41,151,255,0.12); color: var(--blue); }
+  .insight-stat.purple { background: rgba(191,90,242,0.12); color: var(--purple); }
+  .insight-stat.green { background: rgba(48,209,88,0.12); color: var(--green); }
+  .insight-stat.orange { background: rgba(255,159,10,0.12); color: var(--orange); }
+
+  /* ===== ACTION CARDS ===== */
+  .action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .action-card {
+    background: var(--card);
+    padding: 36px 28px;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    opacity: 0;
+    transform: translateY(30px);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .action-card.visible {
+    animation: cardSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .action-card:nth-child(1).visible { animation-delay: 0.1s; }
+  .action-card:nth-child(2).visible { animation-delay: 0.3s; }
+  .action-card:nth-child(3).visible { animation-delay: 0.5s; }
+
+  .action-card:hover {
+    background: var(--card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(41,151,255,0.1), 0 0 60px rgba(191,90,242,0.05);
+  }
+
+  .action-number {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-tertiary);
+  }
+
+  .action-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .action-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-weight: 300;
+    flex: 1;
+  }
+
+  .action-impact {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 8px;
+    margin-top: 4px;
+    display: inline-block;
+    align-self: flex-start;
+  }
+
+  .action-impact.blue {
+    background: rgba(41,151,255,0.1);
+    color: var(--blue);
+    border: 1px solid rgba(41,151,255,0.2);
+  }
+
+  .action-impact.green {
+    background: rgba(48,209,88,0.1);
+    color: var(--green);
+    border: 1px solid rgba(48,209,88,0.2);
+  }
+
+  .action-impact.purple {
+    background: rgba(191,90,242,0.1);
+    color: var(--purple);
+    border: 1px solid rgba(191,90,242,0.2);
+  }
+
+  @media (max-width: 900px) {
+    .action-grid { grid-template-columns: 1fr; }
+  }
+
+  .table-section {
+    padding: 0 24px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .table-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .table-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 16px 28px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'Inter', sans-serif;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 14px 28px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+
+  .table-row:last-child { border-bottom: none; }
+  .table-row:hover { background: rgba(255,255,255,0.02); }
+
+  .table-cell { color: var(--text-secondary); }
+  .table-cell.name { color: var(--text); font-weight: 500; }
+  .table-cell.num { font-family: 'Inter', sans-serif; }
+  .table-cell.up { color: var(--green); }
+  .table-cell.down { color: var(--red); }
+  .table-cell.center { text-align: center; }
+
+  .footer {
+    text-align: center;
+    padding: 48px 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-brand {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    font-weight: 400;
+    letter-spacing: 2px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .footer-brand span {
+    color: var(--blue);
+    font-weight: 500;
+  }
+
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .charts-grid { grid-template-columns: 1fr; }
+    .insight-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 520px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .table-header, .table-row { grid-template-columns: 1.5fr 1fr 1fr 1fr; }
+    .table-header :nth-child(5),
+    .table-header :nth-child(6),
+    .table-row :nth-child(5),
+    .table-row :nth-child(6) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="pulse-ring"></div>
+  <div class="pulse-ring"></div>
+  <div class="pulse-ring"></div>
+  <div class="hero-grid"></div>
+  <div class="data-stream"></div>
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+  <div class="scan-line"></div>
+
+  <div class="hero-eyebrow">中科汇航 · AI Powered Analytics</div>
+  <h1 class="hero-title">
+    <span class="gradient">九田家</span>春节运营<br>数据智能分析
+  </h1>
+  <p class="hero-sub">
+    覆盖 114 家门店 · 65 个城市 · 美团 × 抖音双平台<br>
+    AI 驱动 · 数据归因 · 智能诊断
+  </p>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll-dot"></div>
+  </div>
+</section>
+
+<!-- ========== KPI ========== -->
+<section class="section reveal">
+  <div class="section-bg">
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-data"></div>
+    <div class="bg-scan"></div>
+  </div>
+  <div class="section-eyebrow">Overview</div>
+  <h2 class="section-title">核心指标概览</h2>
+
+  <div class="kpi-grid reveal-scale">
+
+    <div class="kpi-card">
+      <div class="kpi-value blue">529<span style="font-size:0.5em">万</span></div>
+      <div class="kpi-label">2026 春节线上总纯收</div>
+      <div class="kpi-trend up">+2.3% vs 2025</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value green">+149%</div>
+      <div class="kpi-label">抖音同比增长</div>
+      <div class="kpi-trend up">爆发式增长</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value orange">-24%</div>
+      <div class="kpi-label">美团同比增长</div>
+      <div class="kpi-trend down">持续下滑</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value purple">114</div>
+      <div class="kpi-label">覆盖门店总数</div>
+      <div class="kpi-trend" style="color:var(--text-tertiary)">65 个城市</div>
+    </div>
+
+  </div>
+
+  <div class="section-eyebrow">Platform Analysis</div>
+  <h2 class="section-title">平台收入对比</h2>
+
+  <div class="charts-grid">
+    <div class="chart-card reveal-left">
+      <div class="chart-title">美团 vs 抖音 收入趋势</div>
+      <div class="chart-sub">2025 → 2026 春节</div>
+      <div class="chart-wrap">
+        <canvas id="revenueChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card reveal-right">
+      <div class="chart-title">抖音份额变化</div>
+      <div class="chart-sub">2025 仅占 15% → 2026 占 37%</div>
+      <div class="chart-wrap">
+        <canvas id="shareChart"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== INSIGHT ========== -->
+<section class="section reveal">
+  <div class="section-bg">
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-data"></div>
+    <div class="bg-scan"></div>
+  </div>
+  <div class="section-eyebrow">AI Insights</div>
+  <h2 class="section-title">AI 数据洞察</h2>
+
+  <div class="insight-grid">
+    <div class="insight-card">
+      <span class="insight-icon">↻</span>
+      <div class="insight-title">抖音正在接盘美团</div>
+      <div class="insight-desc">抖音增长 +149%，但美团下滑 -24%，线上总收入仅微增 2.3%。抖音的增长几乎全部在填补美团的流失，而非带来增量的新客。</div>
+      <span class="insight-stat blue">平台替代效应</span>
+    </div>
+    <div class="insight-card">
+      <span class="insight-icon">△</span>
+      <div class="insight-title">门店级差达 117 倍</div>
+      <div class="insight-desc">沧州单店线上收入 12.6 万 vs 佛山仅 1,080 元。同一品牌、同一时期，门店运营能力的差距是核心变量，而非品牌力本身。</div>
+      <span class="insight-stat purple">城市策略差异</span>
+    </div>
+    <div class="insight-card">
+      <span class="insight-icon">○</span>
+      <div class="insight-title">抖音渠道仍是蓝海</div>
+      <div class="insight-desc">仍有 10+ 家门店抖音收入为 0。同行已通过抖音实现翻倍增长，这些空白门店面临着巨大机会窗口和竞争压力。</div>
+      <span class="insight-stat green">空白增长点</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CITY TABLE ========== -->
+<section class="table-section reveal">
+  <div class="section-bg">
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-data"></div>
+    <div class="bg-scan"></div>
+  </div>
+  <div class="section-eyebrow">City Ranking</div>
+  <h2 class="section-title">城市排名 Top 10</h2>
+
+  <div class="table-wrap">
+    <div class="table-header">
+      <span>城市</span>
+      <span class="center">门店数</span>
+      <span class="center">线上纯收</span>
+      <span class="center">店均收入</span>
+      <span class="center">抖音占比</span>
+      <span class="center">美团占比</span>
+    </div>
+
+    <div class="table-row top-1">
+      <span class="table-cell name">北京</span>
+      <span class="table-cell num center">9</span>
+      <span class="table-cell num center">549,815</span>
+      <span class="table-cell num center">61,091</span>
+      <span class="table-cell num center up">36.2%</span>
+      <span class="table-cell num center down">63.8%</span>
+    </div>
+
+    <div class="table-row top-2">
+      <span class="table-cell name">天津</span>
+      <span class="table-cell num center">8</span>
+      <span class="table-cell num center">478,584</span>
+      <span class="table-cell num center">59,823</span>
+      <span class="table-cell num center up">23.6%</span>
+      <span class="table-cell num center down">76.4%</span>
+    </div>
+
+    <div class="table-row top-3">
+      <span class="table-cell name">郑州</span>
+      <span class="table-cell num center">3</span>
+      <span class="table-cell num center">247,043</span>
+      <span class="table-cell num center">82,348</span>
+      <span class="table-cell num center up">31.6%</span>
+      <span class="table-cell num center down">68.4%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">南宁</span>
+      <span class="table-cell num center">7</span>
+      <span class="table-cell num center">225,814</span>
+      <span class="table-cell num center">32,259</span>
+      <span class="table-cell num center up">26.1%</span>
+      <span class="table-cell num center down">73.9%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">太原</span>
+      <span class="table-cell num center">7</span>
+      <span class="table-cell num center">212,051</span>
+      <span class="table-cell num center">30,293</span>
+      <span class="table-cell num center up">37.8%</span>
+      <span class="table-cell num center down">62.2%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">合肥</span>
+      <span class="table-cell num center">4</span>
+      <span class="table-cell num center">195,423</span>
+      <span class="table-cell num center">48,856</span>
+      <span class="table-cell num center up">33.9%</span>
+      <span class="table-cell num center down">66.1%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">包头</span>
+      <span class="table-cell num center">3</span>
+      <span class="table-cell num center">151,963</span>
+      <span class="table-cell num center">50,654</span>
+      <span class="table-cell num center up">33.2%</span>
+      <span class="table-cell num center down">66.8%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">乌鲁木齐</span>
+      <span class="table-cell num center">3</span>
+      <span class="table-cell num center">128,430</span>
+      <span class="table-cell num center">42,810</span>
+      <span class="table-cell num center up">22.2%</span>
+      <span class="table-cell num center down">77.8%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">吕梁</span>
+      <span class="table-cell num center">4</span>
+      <span class="table-cell num center">127,112</span>
+      <span class="table-cell num center">31,778</span>
+      <span class="table-cell num center up">63.5%</span>
+      <span class="table-cell num center down">36.5%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">沧州</span>
+      <span class="table-cell num center">1</span>
+      <span class="table-cell num center">126,419</span>
+      <span class="table-cell num center">126,419</span>
+      <span class="table-cell num center up">51.9%</span>
+      <span class="table-cell num center down">48.1%</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== STORE TABLE ========== -->
+<section class="table-section reveal">
+  <div class="section-bg">
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-data"></div>
+    <div class="bg-scan"></div>
+  </div>
+  <div class="section-eyebrow">Store Ranking</div>
+  <h2 class="section-title">门店排名 Top 10</h2>
+
+  <div class="table-wrap">
+    <div class="table-header">
+      <span>门店</span>
+      <span class="center">城市</span>
+      <span class="center">线上纯收</span>
+      <span class="center">抖音占比</span>
+      <span class="center">美团客单</span>
+      <span class="center">抖音客单</span>
+    </div>
+
+    <div class="table-row top-1">
+      <span class="table-cell name">河南郑州二七区万达店</span>
+      <span class="table-cell num center">郑州</span>
+      <span class="table-cell num center">129,893</span>
+      <span class="table-cell num center up">32.7%</span>
+      <span class="table-cell num center">213</span>
+      <span class="table-cell num center">216</span>
+    </div>
+
+    <div class="table-row top-2">
+      <span class="table-cell name">天津津南区永旺梦乐城店</span>
+      <span class="table-cell num center">天津</span>
+      <span class="table-cell num center">128,627</span>
+      <span class="table-cell num center up">28.9%</span>
+      <span class="table-cell num center">243</span>
+      <span class="table-cell num center">225</span>
+    </div>
+
+    <div class="table-row top-3">
+      <span class="table-cell name">河北沧州新华中路华北商厦店</span>
+      <span class="table-cell num center">沧州</span>
+      <span class="table-cell num center">126,419</span>
+      <span class="table-cell num center up">51.9%</span>
+      <span class="table-cell num center">219</span>
+      <span class="table-cell num center">235</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">山东济宁任城区万达店</span>
+      <span class="table-cell num center">济宁</span>
+      <span class="table-cell num center">118,615</span>
+      <span class="table-cell num center up">30.2%</span>
+      <span class="table-cell num center">202</span>
+      <span class="table-cell num center">200</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">北京顺义区华联金街店</span>
+      <span class="table-cell num center">北京</span>
+      <span class="table-cell num center">109,315</span>
+      <span class="table-cell num center up">27.9%</span>
+      <span class="table-cell num center">216</span>
+      <span class="table-cell num center">203</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">北京石景山区万达店</span>
+      <span class="table-cell num center">北京</span>
+      <span class="table-cell num center">105,989</span>
+      <span class="table-cell num center up">44.8%</span>
+      <span class="table-cell num center">226</span>
+      <span class="table-cell num center">222</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">湖北仙桃武商购物中心店</span>
+      <span class="table-cell num center">仙桃</span>
+      <span class="table-cell num center">103,834</span>
+      <span class="table-cell num center up">36.2%</span>
+      <span class="table-cell num center">254</span>
+      <span class="table-cell num center">259</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">河南信阳平桥区万达店</span>
+      <span class="table-cell num center">信阳</span>
+      <span class="table-cell num center">103,623</span>
+      <span class="table-cell num center up">49.1%</span>
+      <span class="table-cell num center">236</span>
+      <span class="table-cell num center">260</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">河南新乡牧野区万达店</span>
+      <span class="table-cell num center">新乡</span>
+      <span class="table-cell num center">98,894</span>
+      <span class="table-cell num center up">72.2%</span>
+      <span class="table-cell num center">186</span>
+      <span class="table-cell num center">198</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell name">天津红桥区水游城店</span>
+      <span class="table-cell num center">天津</span>
+      <span class="table-cell num center">98,516</span>
+      <span class="table-cell num center up">29.2%</span>
+      <span class="table-cell num center">241</span>
+      <span class="table-cell num center">206</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== ACTION ========== -->
+<section class="section reveal">
+  <div class="section-bg">
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-data"></div>
+    <div class="bg-scan"></div>
+  </div>
+  <div class="section-eyebrow">AI Action Plan</div>
+  <h2 class="section-title">AI 诊断 · 行动建议</h2>
+
+  <div class="action-grid">
+    <div class="action-card">
+      <span class="action-number">01</span>
+      <div class="action-title" style="color: var(--blue);">抖音要"拉新"不是"接盘"</div>
+      <div class="action-desc">
+        抖音增长+149%但线上总收入仅+2.3%，抖音吃的全是美团流失的存量。<br>
+        <strong>行动：</strong>做抖音专属套餐（美团上没有的品），用"到店核销率"和"新客占比"两个指标考核，而非单纯GMV。
+      </div>
+      <span class="action-impact blue">预计可带动线上增量+15%~25%</span>
+    </div>
+
+    <div class="action-card">
+      <span class="action-number">02</span>
+      <div class="action-title" style="color: var(--green);">建立门店分级运营体系</div>
+      <div class="action-desc">
+        沧州单店12.6万 vs 佛山仅1,080元，店均差117倍。这不是品牌问题，是运营能力问题。<br>
+        <strong>行动：</strong>按线上收入将114家店分为S/A/B/C四级，C级店（月均<1万）输出标准化SOP，总部每周跟进整改。
+      </div>
+      <span class="action-impact green">C级店收入目标提升3~5倍</span>
+    </div>
+
+    <div class="action-card">
+      <span class="action-number">03</span>
+      <div class="action-title" style="color: var(--purple);">抖音空白门店快速铺开</div>
+      <div class="action-desc">
+        仍有10+门店抖音收入为0。在竞品已通过抖音翻倍增长的环境下，这些门店正在失去窗口期。<br>
+        <strong>行动：</strong>两周内完成所有空白门店的抖音团购上架，总部统一制作素材，单店只负责核销，降低门店执行门槛。
+      </div>
+      <span class="action-impact purple">预计新增抖音收入60~100万/年</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <p class="footer-brand">中科汇航 · <span>AI</span> Powered Analytics</p>
+</footer>
+
+<script>
+// ===== Intersection Observer — 滚动触发动画 =====
+let countUpTriggered = false;
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+  
+  // 触发数字滚动（KPI卡片可见时）
+  if (!countUpTriggered) {
+    const kpiSection = document.querySelector('.kpi-grid');
+    if (kpiSection && kpiSection.classList.contains('visible')) {
+      countUpTriggered = true;
+      setTimeout(startCountUp, 300);
+    }
+  }
+  
+  // 触发打字机效果（insight/action卡片可见时）
+  document.querySelectorAll('.insight-card.visible').forEach(el => {
+    if (!el.dataset.typingStarted) {
+      el.dataset.typingStarted = '1';
+    }
+  });
+  document.querySelectorAll('.action-card.visible').forEach(el => {
+    if (!el.dataset.typingStarted) {
+      el.dataset.typingStarted = '1';
+    }
+  });
+  startTypeWriter();
+}, { threshold: 0.15 });
+
+// 观察所有需要动画的元素
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .section-title, .table-row, .insight-card, .chart-card, .action-card').forEach(el => {
+  observer.observe(el);
+});
+
+// ===== Revenue Comparison Chart =====
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2025 春节', '2026 春节'],
+    datasets: [
+      {
+        label: '美团',
+        data: [4382950, 3325783],
+        backgroundColor: 'rgba(41,151,255,0.85)',
+        borderRadius: 6,
+        barPercentage: 0.35,
+      },
+      {
+        label: '抖音',
+        data: [787522, 1962686],
+        backgroundColor: 'rgba(191,90,242,0.85)',
+        borderRadius: 6,
+        barPercentage: 0.35,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: 'rgba(255,255,255,0.6)', font: { family: 'Inter', size: 12 }, usePointStyle: true, padding: 16 } }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.4)', font: { family: 'Inter', size: 12 } } },
+      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.4)', font: { family: 'Inter', size: 11 }, callback: v => (v/10000).toFixed(0) + '万' } }
+    },
+    animation: {
+      duration: 1200,
+      easing: 'easeOutQuart'
+    }
+  }
+});
+
+// ===== Share Pie Chart =====
+new Chart(document.getElementById('shareChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['美团', '抖音'],
+    datasets: [{
+      data: [63, 37],
+      backgroundColor: ['rgba(41,151,255,0.85)', 'rgba(191,90,242,0.85)'],
+      borderWidth: 0,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { color: 'rgba(255,255,255,0.6)', font: { family: 'Inter', size: 12 }, usePointStyle: true, padding: 16 }
+      }
+    },
+    animation: {
+      animateRotate: true,
+      duration: 1000,
+      easing: 'easeOutQuart'
+    }
+  }
+});
+
+// ===== 数字滚动计数器 =====
+function animateCountUp(el, target, suffix, isNegative) {
+  const duration = 1500;
+  const steps = 40;
+  const stepTime = duration / steps;
+  let current = 0;
+  
+  const timer = setInterval(() => {
+    current++;
+    const progress = current / steps;
+    const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+    let value = Math.round(eased * target);
+    if (isNegative) value = -value;
+    
+    if (current >= steps) {
+      value = isNegative ? -target : target;
+      clearInterval(timer);
+    }
+    
+    el.innerHTML = (isNegative ? '-' : '') + value.toLocaleString() + suffix;
+  }, stepTime);
+}
+
+function startCountUp() {
+  const cards = document.querySelectorAll('.kpi-card');
+  if (!cards.length) return;
+  
+  const values = [
+    { target: 529, suffix: '<span style="font-size:0.5em">万</span>', isNegative: false },
+    { target: 149, suffix: '%', isNegative: false },
+    { target: 24, suffix: '%', isNegative: true },
+    { target: 114, suffix: '', isNegative: false }
+  ];
+  
+  cards.forEach((card, i) => {
+    const vEl = card.querySelector('.kpi-value');
+    if (vEl && values[i]) {
+      const v = values[i];
+      // Store original for reference
+      vEl._target = v.target;
+      vEl._suffix = v.suffix;
+      vEl._isNegative = v.isNegative;
+      // Start from 0
+      vEl.innerHTML = v.isNegative ? '0' + v.suffix : '0' + v.suffix;
+      setTimeout(() => {
+        animateCountUp(vEl, v.target, v.suffix, v.isNegative);
+      }, i * 200); // stagger
+    }
+  });
+}
+
+// ===== 打字机效果 =====
+function typeWriter(el, text, speed = 25, callback) {
+  let i = 0;
+  el.textContent = '';
+  el.style.visibility = 'visible';
+  
+  function type() {
+    if (i < text.length) {
+      el.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, speed + Math.random() * 15);
+    } else if (callback) {
+      callback();
+    }
+  }
+  type();
+}
+
+function startTypeWriter() {
+  // Insight cards
+  document.querySelectorAll('.insight-card.visible .insight-desc').forEach(el => {
+    if (el.dataset.typed) return;
+    el.dataset.typed = '1';
+    const text = el.textContent.trim();
+    el.textContent = '';
+    setTimeout(() => typeWriter(el, text, 20), 300);
+  });
+  
+  // Action cards - 纯文本打字，保留"行动："加粗
+  document.querySelectorAll('.action-card.visible .action-desc').forEach(el => {
+    if (el.dataset.typed) return;
+    el.dataset.typed = '1';
+    const raw = el.innerHTML.trim();
+    const plainText = raw
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<strong>/gi, '')
+      .replace(/<\/strong>/gi, '')
+      .replace(/&nbsp;/g, ' ');
+    el.innerHTML = '';
+    setTimeout(() => {
+      let idx = 0;
+      const typePlain = () => {
+        if (idx < plainText.length) {
+          const ch = plainText.charAt(idx);
+          const remaining = plainText.substring(idx);
+          if (ch === '\n') {
+            el.appendChild(document.createElement('br'));
+            idx++;
+          } else if (remaining.startsWith('行动：')) {
+            const span = document.createElement('span');
+            span.style.cssText = 'color: #2997FF; font-weight: 700;';
+            span.textContent = '行动：';
+            el.appendChild(span);
+            idx += 3;
+          } else {
+            el.appendChild(document.createTextNode(ch));
+            idx++;
+          }
+          setTimeout(typePlain, 15 + Math.random() * 12);
+        }
+      };
+      typePlain();
+    }, 600);
+  });
+}
+
+</script>
+
+</body>
+</html>
