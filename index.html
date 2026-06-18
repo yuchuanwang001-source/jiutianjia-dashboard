@@ -11,6 +11,8 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
+    --mouse-x: 0.5;
+    --mouse-y: 0.5;
     --bg: #000000;
     --surface: #0d0d0d;
     --card: #121214;
@@ -222,7 +224,7 @@
   .table-row.top-1::before,
   .table-row.top-2::before,
   .table-row.top-3::before {
-    content: '🥇';
+    content: '';
     position: absolute;
     left: -8px;
     top: 50%;
@@ -230,20 +232,19 @@
     font-size: 16px;
   }
 
-  .table-row.top-2::before { content: '🥈'; }
-  .table-row.top-3::before { content: '🥉'; }
+  .table-row.top-2::before { content: ''; }
+  .table-row.top-3::before { content: ''; }
 
   .table-row.top-1:hover,
   .table-row.top-2:hover,
   .table-row.top-3:hover {
-    background: linear-gradient(135deg, rgba(255,159,10,0.14), rgba(255,159,10,0.04));
+    background: rgba(255,255,255,0.03);
   }
 
   .table-row.top-1,
   .table-row.top-2,
   .table-row.top-3 {
-    background: linear-gradient(135deg, rgba(255,159,10,0.08), rgba(255,159,10,0.02));
-    border-left: 3px solid #FF9F0A;
+    background: rgba(255,255,255,0.02);
   }
 
   .table-row.top-1 .table-cell,
@@ -619,7 +620,7 @@
   /* ===== TABLE ROW ENTRANCE ===== */
   .table-row {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 0.6fr 0.9fr 0.6fr 1.1fr 1.1fr 1.1fr 1.1fr 1.1fr;
     padding: 14px 28px;
     font-size: 14px;
     border-bottom: 1px solid var(--border);
@@ -1090,24 +1091,26 @@
 
   .table-header {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 0.6fr 0.9fr 0.6fr 1.1fr 1.1fr 1.1fr 1.1fr 1.1fr;
     padding: 16px 28px;
     font-size: 12px;
-    font-weight: 500;
-    color: var(--text-tertiary);
+    font-weight: 600;
+    color: var(--text-secondary);
     letter-spacing: 1px;
     text-transform: uppercase;
+    align-items: center;
     font-family: 'Inter', sans-serif;
     border-bottom: 1px solid var(--border);
   }
 
   .table-row {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 0.6fr 0.9fr 0.6fr 1.1fr 1.1fr 1.1fr 1.1fr 1.1fr;
     padding: 14px 28px;
     font-size: 14px;
     border-bottom: 1px solid var(--border);
     transition: background 0.2s;
+    align-items: center;
   }
 
   .table-row:last-child { border-bottom: none; }
@@ -1115,10 +1118,12 @@
 
   .table-cell { color: var(--text-secondary); }
   .table-cell.name { color: var(--text); font-weight: 500; }
+  .table-cell.rank { font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text-tertiary); min-width: 32px; text-align: center; }
   .table-cell.num { font-family: 'Inter', sans-serif; }
   .table-cell.up { color: var(--green); }
   .table-cell.down { color: var(--red); }
   .table-cell.center { text-align: center; }
+  .table-header .center { text-align: center; }
 
   .footer {
     text-align: center;
@@ -1184,16 +1189,18 @@
   </div>
   <div class="scan-line"></div>
 
-  <div class="hero-eyebrow">中科汇航 · AI Powered Analytics</div>
+  <div class="hero-eyebrow">中科汇航 · 聚焦本地 · 商赢未来</div>
   <h1 class="hero-title">
     <span class="gradient">九田家</span>春节运营<br>数据智能分析
   </h1>
   <p class="hero-sub">
-    覆盖 114 家门店 · 65 个城市 · 美团 × 抖音双平台<br>
-    AI 驱动 · 数据归因 · 智能诊断
+    114 家门店 · 65 个城市 · 美团 × 抖音 · AI 智能诊断
   </p>
+  <div style="margin-top:16px;position:relative;z-index:1">
+    <span style="font-size:11px;padding:4px 14px;border-radius:20px;background:rgba(41,151,255,0.1);color:var(--blue);border:1px solid rgba(41,151,255,0.2)">数据智能解决方案</span>
+  </div>
   <div class="hero-scroll">
-    <span>Scroll</span>
+    <span>滚动探索</span>
     <div class="hero-scroll-dot"></div>
   </div>
 </section>
@@ -1206,45 +1213,44 @@
     <div class="bg-data"></div>
     <div class="bg-scan"></div>
   </div>
-  <div class="section-eyebrow">Overview</div>
   <h2 class="section-title">核心指标概览</h2>
 
   <div class="kpi-grid reveal-scale">
 
     <div class="kpi-card">
-      <div class="kpi-value kpi-alert">853<span style="font-size:0.5em">万</span></div>
-      <div class="kpi-label">2026 春节7天总纯收 <span class="kpi-badge danger">▼ 重点关注</span></div>
-      <div class="kpi-trend down">-19.5% vs 2025（1,060万）</div>
+      <div class="kpi-value" style="color:var(--text)">853<span style="font-size:0.5em">万</span></div>
+      <div class="kpi-label">2026 春节7天总纯收</div>
+      <div class="kpi-trend down">−19.5%</div>
       <div class="kpi-compare">
-        <div class="kpi-compare-bar"><div class="kpi-compare-fill negative" style="--pct:80.5%"></div></div>
-        <span class="kpi-compare-label">80.5%</span>
+        <div class="kpi-compare-bar"><div class="kpi-compare-fill" style="--pct:80.5%;background:var(--red)"></div></div>
+        <span class="kpi-compare-label">上期 1,060 万</span>
       </div>
     </div>
     <div class="kpi-card">
       <div class="kpi-value" style="color:var(--text-tertiary)">4,656<span style="font-size:0.5em">台</span></div>
-      <div class="kpi-label">日均总开台数 <span class="kpi-badge neutral">几乎持平</span></div>
-      <div class="kpi-trend" style="color:var(--text-tertiary)">-1.1% vs 2025（4,707台）</div>
+      <div class="kpi-label">日均总开台数</div>
+      <div class="kpi-trend" style="color:var(--text-tertiary)">−1.1%</div>
       <div class="kpi-compare">
-        <div class="kpi-compare-bar"><div class="kpi-compare-fill negative" style="--pct:98.9%"></div></div>
-        <span class="kpi-compare-label">98.9%</span>
+        <div class="kpi-compare-bar"><div class="kpi-compare-fill" style="--pct:98.9%;background:rgba(255,255,255,0.15)"></div></div>
+        <span class="kpi-compare-label">上期 4,707 台</span>
       </div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-value" style="color:var(--orange)">262<span style="font-size:0.5em">元</span></div>
-      <div class="kpi-label">客单价（桌均） <span class="kpi-badge warn">▼ 下滑主因</span></div>
-      <div class="kpi-trend down">-18.6% vs 2025（322元）消费降级</div>
+      <div class="kpi-value" style="color:var(--text)">262<span style="font-size:0.5em">元</span></div>
+      <div class="kpi-label">客单价（桌均）</div>
+      <div class="kpi-trend down">−18.6%</div>
       <div class="kpi-compare">
-        <div class="kpi-compare-bar"><div class="kpi-compare-fill negative" style="--pct:81.4%"></div></div>
-        <span class="kpi-compare-label">81.4%</span>
+        <div class="kpi-compare-bar"><div class="kpi-compare-fill" style="--pct:81.4%;background:var(--orange)"></div></div>
+        <span class="kpi-compare-label">上期 322 元</span>
       </div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-value blue">529<span style="font-size:0.5em">万</span></div>
-      <div class="kpi-label">线上纯收（美团+抖音） <span class="kpi-badge success">▲ 唯一增长</span></div>
-      <div class="kpi-trend up">+2.3% vs 2025 抖音+149%</div>
+      <div class="kpi-value" style="color:var(--text)">529<span style="font-size:0.5em">万</span></div>
+      <div class="kpi-label">线上纯收（美团+抖音）</div>
+      <div class="kpi-trend up">+2.3%</div>
       <div class="kpi-compare">
-        <div class="kpi-compare-bar"><div class="kpi-compare-fill positive" style="--pct:102.3%"></div></div>
-        <span class="kpi-compare-label">102.3%</span>
+        <div class="kpi-compare-bar"><div class="kpi-compare-fill" style="--pct:102.3%;background:var(--blue)"></div></div>
+        <span class="kpi-compare-label">上期 517 万</span>
       </div>
     </div>
 
@@ -1254,53 +1260,109 @@
   <div class="decompose-card reveal-scale">
     <div class="decompose-title">业绩下滑原因分解</div>
     <div class="decompose-row">
-      <span class="decompose-label">桌均（客单价）下降</span>
+      <span class="decompose-label">桌均下降（主因）</span>
       <div class="decompose-bar-wrap">
-        <div class="decompose-bar-fill major" style="--pct:95.5%">
+        <div class="decompose-bar-fill" style="--pct:95.5%;background:var(--red)">
           <span class="decompose-pct-label">95.5%</span>
         </div>
       </div>
-      <span class="decompose-val negative">每桌−60元</span>
+      <span class="decompose-val" style="color:var(--red)">每桌−60元</span>
     </div>
     <div class="decompose-row">
       <span class="decompose-label">开台数减少</span>
       <div class="decompose-bar-wrap">
-        <div class="decompose-bar-fill minor" style="--pct:5.6%">
-          <span class="decompose-pct-label">5.6%</span>
+        <div class="decompose-bar-fill" style="--pct:5.6%;background:rgba(255,255,255,0.15)">
+          <span class="decompose-pct-label" style="color:var(--text-tertiary)">5.6%</span>
         </div>
       </div>
-      <span class="decompose-val negative">日均−51台</span>
+      <span class="decompose-val" style="color:var(--text-tertiary)">日均−51台</span>
     </div>
     <div class="decompose-total">
       <span>总下滑</span>
-      <span class="negative">-29.5万 (−19.5%)</span>
+      <span style="color:var(--red);font-family:'Inter',sans-serif;font-weight:700">−29.5万 (19.5%)</span>
     </div>
   </div>
 
   <!-- ===== 核心总结 ===== -->
-  <div class="insight-card" style="grid-column:1/-1;text-align:center;padding:24px 32px;margin-bottom:48px">
+  <div class="insight-card" style="grid-column:1/-1;padding:24px 32px;margin-bottom:48px">
     <div style="font-size:13px;color:var(--text-secondary);line-height:1.8">
-      <strong style="color:var(--orange)">核心总结：</strong>
-      客流基本稳定（开台数仅−1.1%），但每桌消费从<strong style="color:var(--red)">322元</strong>跌至<strong style="color:var(--red)">262元</strong>，客单价下降是业绩下滑<strong style="color:var(--orange)">95.5%</strong>的原因。抖音虽增长+149%，但线上整体仅增+2.3%，增量全部被美团−24%抵消。<strong style="color:var(--orange)">"人没少、钱少花"</strong>是核心问题。
+      <div style="margin-bottom:8px">
+        <span style="color:var(--text-tertiary);font-family:'Inter',sans-serif;margin-right:8px">1.</span>
+        客流基本稳定（开台数仅−1.1%），但每桌消费从<span style="color:var(--text)">322元</span>跌至<span style="color:var(--text)">262元</span>，<span style="color:var(--red)">客单价下降贡献了95.5%的业绩下滑</span>。
+      </div>
+      <div>
+        <span style="color:var(--text-tertiary);font-family:'Inter',sans-serif;margin-right:8px">2.</span>
+        抖音增长<span style="color:var(--green)">+149%</span>，但线上整体仅<span style="color:var(--text-tertiary)">+2.3%</span>，增量全被美团<span style="color:var(--red)">−24%</span>抵消。<span style="color:var(--text)">"人没少、钱少花"</span>是核心问题。
+      </div>
     </div>
   </div>
 
-  <div class="section-eyebrow">Platform Analysis</div>
-  <h2 class="section-title">平台收入对比</h2>
+  <h2 class="section-title">平台结构变化</h2>
 
+  <!-- 顶部结论 -->
+  <div class="insight-card" style="grid-column:1/-1;padding:24px 32px;margin-bottom:32px">
+    <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:10px">核心发现</div>
+    <div style="font-size:clamp(17px,2.5vw,24px);font-weight:700;line-height:1.4;margin-bottom:10px">
+      线上纯收 <span style="color:var(--text)">529万</span> · 同比 <span style="color:var(--text-tertiary)">+2.3%</span>
+    </div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.7">
+      抖音增长<span style="color:var(--green)">+149%</span>，但美团下滑<span style="color:var(--red)">−24%</span>。
+      抖音增量几乎全部被美团流失抵消，<span style="color:var(--text)">平台在「替换」而非「增长」。</span>
+    </div>
+  </div>
+
+  <!-- 下方：横条 + 对比卡 -->
   <div class="charts-grid">
     <div class="chart-card reveal-left">
-      <div class="chart-title">美团 vs 抖音 收入趋势</div>
-      <div class="chart-sub">2025 → 2026 春节</div>
-      <div class="chart-wrap">
-        <canvas id="revenueChart"></canvas>
+      <div class="chart-title">两年结构对比</div>
+      <div class="chart-sub">2025 → 2026</div>
+      <div style="padding:16px 4px;display:flex;flex-direction:column;gap:24px;height:240px;justify-content:center">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-tertiary);margin-bottom:8px">
+            <span>2025 春节</span>
+            <span>517 万</span>
+          </div>
+          <div style="height:32px;border-radius:16px;overflow:hidden;display:flex;background:rgba(255,255,255,0.03)">
+            <div style="width:84.8%;background:linear-gradient(90deg,rgba(41,151,255,0.5),rgba(41,151,255,0.35));display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(255,255,255,0.6)">84.8%</div>
+            <div style="width:15.2%;background:linear-gradient(90deg,rgba(191,90,242,0.35),rgba(191,90,242,0.5));display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(255,255,255,0.6)">15.2%</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px">
+            <span style="font-size:9px;color:rgba(41,151,255,0.5)">● 美团</span>
+            <span style="font-size:9px;color:rgba(191,90,242,0.5)">● 抖音</span>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-tertiary);margin-bottom:8px">
+            <span>2026 春节</span>
+            <span>529 万</span>
+          </div>
+          <div style="height:32px;border-radius:16px;overflow:hidden;display:flex;background:rgba(255,255,255,0.03)">
+            <div style="width:62.9%;background:linear-gradient(90deg,rgba(41,151,255,0.7),rgba(41,151,255,0.5));display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(255,255,255,0.8)">62.9%</div>
+            <div style="width:37.1%;background:linear-gradient(90deg,rgba(191,90,242,0.5),rgba(191,90,242,0.7));display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(255,255,255,0.8)">37.1%</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px">
+            <span style="font-size:9px;color:rgba(41,151,255,0.7)">● 美团</span>
+            <span style="font-size:9px;color:rgba(191,90,242,0.7)">● 抖音</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="chart-card reveal-right">
-      <div class="chart-title">抖音份额变化</div>
-      <div class="chart-sub">2025 仅占 15% → 2026 占 37%</div>
-      <div class="chart-wrap">
-        <canvas id="shareChart"></canvas>
+    <div class="chart-card reveal-right" style="display:flex;flex-direction:column;justify-content:center;padding:32px">
+      <div style="display:flex;gap:16px;margin-bottom:16px">
+        <div style="flex:1;text-align:center;padding:20px 8px;border-radius:14px;border:1px solid rgba(255,255,255,0.06)">
+          <div style="font-size:10px;color:var(--text-tertiary);margin-bottom:6px">美团流失</div>
+          <div style="font-size:24px;font-weight:900;color:var(--red);font-family:'Inter'">−24%</div>
+          <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px">减少 105.7 万</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:20px 8px;border-radius:14px;border:1px solid rgba(255,255,255,0.06)">
+          <div style="font-size:10px;color:var(--text-tertiary);margin-bottom:6px">抖音增长</div>
+          <div style="font-size:24px;font-weight:900;color:var(--green);font-family:'Inter'">+149%</div>
+          <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px">增加 117.5 万</div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:12px;border-radius:10px;background:rgba(255,255,255,0.03)">
+        <span style="font-size:11px;color:var(--text-secondary)">抖音增量 − 美团流失 = </span>
+        <span style="font-size:14px;font-weight:700;color:var(--text-tertiary)">仅净增 11.8 万</span>
       </div>
     </div>
   </div>
@@ -1314,27 +1376,26 @@
     <div class="bg-data"></div>
     <div class="bg-scan"></div>
   </div>
-  <div class="section-eyebrow">AI Insights</div>
   <h2 class="section-title">AI 数据洞察</h2>
 
   <div class="insight-grid">
     <div class="insight-card">
       <span class="insight-icon">↻</span>
-      <div class="insight-title">业绩下滑主因：客单价暴跌</div>
-      <div class="insight-desc">春节7天总纯收下滑 19.5%，但日均开台数仅减少 1.1%。客流基本稳定，桌均从 322 元跌至 262 元，每桌少消费 60 元。消费降级是核心问题，不是没人来，是来了花得少了。</div>
-      <span class="insight-stat blue">消费降级信号</span>
+      <div class="insight-title">翻台能力决定涨跌方向</div>
+      <div class="insight-desc">济宁开台数暴涨+67.7%，驱动营收+31.9%的增长；盐城开台数下降−15%，导致营收−27.9%的最大跌幅。客流才是真正的胜负手，桌均下降是全行业问题，但翻台能力才是门店之间的分水岭。</div>
+      <span class="insight-stat">运营能力核心指标</span>
     </div>
     <div class="insight-card">
       <span class="insight-icon">△</span>
-      <div class="insight-title">门店级差达 117 倍</div>
-      <div class="insight-desc">沧州单店线上收入 12.6 万 vs 佛山仅 1,080 元。同一品牌、同一时期，门店运营能力的差距是核心变量，而非品牌力本身。</div>
-      <span class="insight-stat purple">城市策略差异</span>
+      <div class="insight-title">大同模式：唯一增长城市的密码</div>
+      <div class="insight-desc">10个城市中唯一实现增长的大同（+10.6%），靠的是开台数暴涨+38.1%。桌均同样下滑−20%，但翻台的提升足够覆盖客单下降。这条增长路径——"以量补价"——已经被验证可行。</div>
+      <span class="insight-stat">可复制增长模型</span>
     </div>
     <div class="insight-card">
       <span class="insight-icon">○</span>
-      <div class="insight-title">抖音渠道仍是蓝海</div>
-      <div class="insight-desc">仍有 10+ 家门店抖音收入为 0。同行已通过抖音实现翻倍增长，这些空白门店面临着巨大机会窗口和竞争压力。</div>
-      <span class="insight-stat green">空白增长点</span>
+      <div class="insight-title">抖音增量 ≠ 真实增长</div>
+      <div class="insight-desc">抖音增长+149%但线上整体仅+2.3%，增量几乎被美团−24%全部抵消。抖音的市场份额从15%涨到37%，但蛋糕并没有变大——平台在"换血"而非"造血"。需要差异化策略来打开增量。</div>
+      <span class="insight-stat">平台替代效应</span>
     </div>
   </div>
 </section>
@@ -1347,109 +1408,134 @@
     <div class="bg-data"></div>
     <div class="bg-scan"></div>
   </div>
-  <div class="section-eyebrow">City Ranking</div>
-  <h2 class="section-title">城市排名 Top 10</h2>
+  <h2 class="section-title">城市维度分析</h2>
+  <div style="font-size:12px;color:var(--text-tertiary);margin-top:-36px;margin-bottom:36px;font-family:'Inter',sans-serif">按同比增长从高到低</div>
 
   <div class="table-wrap">
     <div class="table-header">
+      <span class="center">排名</span>
       <span>城市</span>
-      <span class="center">门店数</span>
-      <span class="center">线上纯收</span>
-      <span class="center">店均收入</span>
-      <span class="center">抖音占比</span>
-      <span class="center">美团占比</span>
+      <span class="center">门店</span>
+      <span class="center">26年日均</span>
+      <span class="center">25年日均</span>
+      <span class="center">同比</span>
+      <span class="center">开台同比</span>
+      <span class="center">桌均同比</span>
     </div>
 
     <div class="table-row top-1">
-      <span class="table-cell name">北京</span>
-      <span class="table-cell num center">9</span>
-      <span class="table-cell num center">549,815</span>
-      <span class="table-cell num center">61,091</span>
-      <span class="table-cell num center up">36.2%</span>
-      <span class="table-cell num center down">63.8%</span>
+      <span class="table-cell rank center">🥇</span>
+      <span class="table-cell name">大同</span>
+      <span class="table-cell num center">3</span>
+      <span class="table-cell num center">28,981</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">26,215</span>
+      <span class="table-cell num center up">+10.6%</span>
+      <span class="table-cell num center">+38.1%</span>
+      <span class="table-cell num center">−20.0%</span>
     </div>
 
     <div class="table-row top-2">
-      <span class="table-cell name">天津</span>
-      <span class="table-cell num center">8</span>
-      <span class="table-cell num center">478,584</span>
-      <span class="table-cell num center">59,823</span>
-      <span class="table-cell num center up">23.6%</span>
-      <span class="table-cell num center down">76.4%</span>
+      <span class="table-cell rank center">🥈</span>
+      <span class="table-cell name">南宁</span>
+      <span class="table-cell num center">7</span>
+      <span class="table-cell num center">60,194</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">61,094</span>
+      <span class="table-cell num center down">−1.5%</span>
+      <span class="table-cell num center">+17.2%</span>
+      <span class="table-cell num center">−16.0%</span>
     </div>
 
     <div class="table-row top-3">
-      <span class="table-cell name">郑州</span>
-      <span class="table-cell num center">3</span>
-      <span class="table-cell num center">247,043</span>
-      <span class="table-cell num center">82,348</span>
-      <span class="table-cell num center up">31.6%</span>
-      <span class="table-cell num center down">68.4%</span>
+      <span class="table-cell rank center">🥉</span>
+      <span class="table-cell name">乌兰察布</span>
+      <span class="table-cell num center">2</span>
+      <span class="table-cell num center">27,189</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">28,893</span>
+      <span class="table-cell num center down">−5.9%</span>
+      <span class="table-cell num center">+11.8%</span>
+      <span class="table-cell num center">−15.8%</span>
     </div>
 
     <div class="table-row">
-      <span class="table-cell name">南宁</span>
-      <span class="table-cell num center">7</span>
-      <span class="table-cell num center">225,814</span>
-      <span class="table-cell num center">32,259</span>
-      <span class="table-cell num center up">26.1%</span>
-      <span class="table-cell num center down">73.9%</span>
-    </div>
-
-    <div class="table-row">
-      <span class="table-cell name">太原</span>
-      <span class="table-cell num center">7</span>
-      <span class="table-cell num center">212,051</span>
-      <span class="table-cell num center">30,293</span>
-      <span class="table-cell num center up">37.8%</span>
-      <span class="table-cell num center down">62.2%</span>
-    </div>
-
-    <div class="table-row">
+      <span class="table-cell rank center">4</span>
       <span class="table-cell name">合肥</span>
       <span class="table-cell num center">4</span>
-      <span class="table-cell num center">195,423</span>
-      <span class="table-cell num center">48,856</span>
-      <span class="table-cell num center up">33.9%</span>
-      <span class="table-cell num center down">66.1%</span>
+      <span class="table-cell num center">41,528</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">44,753</span>
+      <span class="table-cell num center down">−7.2%</span>
+      <span class="table-cell num center">+5.5%</span>
+      <span class="table-cell num center">−12.0%</span>
     </div>
 
     <div class="table-row">
-      <span class="table-cell name">包头</span>
+      <span class="table-cell rank center">5</span>
+      <span class="table-cell name">天津</span>
+      <span class="table-cell num center">8</span>
+      <span class="table-cell num center">87,474</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">101,626</span>
+      <span class="table-cell num center down">−13.9%</span>
+      <span class="table-cell num center">+11.3%</span>
+      <span class="table-cell num center">−22.7%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell rank center">6</span>
+      <span class="table-cell name">郑州</span>
       <span class="table-cell num center">3</span>
-      <span class="table-cell num center">151,963</span>
-      <span class="table-cell num center">50,654</span>
-      <span class="table-cell num center up">33.2%</span>
-      <span class="table-cell num center down">66.8%</span>
+      <span class="table-cell num center">39,312</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">47,209</span>
+      <span class="table-cell num center down">−16.7%</span>
+      <span class="table-cell num center">+2.7%</span>
+      <span class="table-cell num center">−18.9%</span>
     </div>
 
     <div class="table-row">
-      <span class="table-cell name">乌鲁木齐</span>
-      <span class="table-cell num center">3</span>
-      <span class="table-cell num center">128,430</span>
-      <span class="table-cell num center">42,810</span>
-      <span class="table-cell num center up">22.2%</span>
-      <span class="table-cell num center down">77.8%</span>
-    </div>
-
-    <div class="table-row">
+      <span class="table-cell rank center">7</span>
       <span class="table-cell name">吕梁</span>
       <span class="table-cell num center">4</span>
-      <span class="table-cell num center">127,112</span>
-      <span class="table-cell num center">31,778</span>
-      <span class="table-cell num center up">63.5%</span>
-      <span class="table-cell num center down">36.5%</span>
+      <span class="table-cell num center">42,538</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">54,524</span>
+      <span class="table-cell num center down">−22.0%</span>
+      <span class="table-cell num center">−3.3%</span>
+      <span class="table-cell num center">−19.4%</span>
     </div>
 
     <div class="table-row">
-      <span class="table-cell name">沧州</span>
-      <span class="table-cell num center">1</span>
-      <span class="table-cell num center">126,419</span>
-      <span class="table-cell num center">126,419</span>
-      <span class="table-cell num center up">51.9%</span>
-      <span class="table-cell num center down">48.1%</span>
+      <span class="table-cell rank center">8</span>
+      <span class="table-cell name">包头</span>
+      <span class="table-cell num center">3</span>
+      <span class="table-cell num center">36,970</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">48,058</span>
+      <span class="table-cell num center down">−23.1%</span>
+      <span class="table-cell num center">−7.5%</span>
+      <span class="table-cell num center">−16.9%</span>
     </div>
 
+    <div class="table-row">
+      <span class="table-cell rank center">9</span>
+      <span class="table-cell name">太原</span>
+      <span class="table-cell num center">7</span>
+      <span class="table-cell num center">59,203</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">79,112</span>
+      <span class="table-cell num center down">−25.2%</span>
+      <span class="table-cell num center">−5.2%</span>
+      <span class="table-cell num center">−21.1%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell rank center">10</span>
+      <span class="table-cell name">北京</span>
+      <span class="table-cell num center">9</span>
+      <span class="table-cell num center">90,445</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">132,148</span>
+      <span class="table-cell num center down">−31.6%</span>
+      <span class="table-cell num center">−11.1%</span>
+      <span class="table-cell num center">−23.0%</span>
+    </div>
+
+  </div>
+  <div style="font-size:12px;color:var(--text-tertiary);margin-top:16px;line-height:1.6;padding:0 8px">
+    仅<span style="color:var(--green)">大同</span>实现增长（+10.6%），靠开台数暴涨38.1%带动；其余9城均下滑，<span style="color:var(--red)">北京</span>最严重（−31.6%），开台和桌均双降。所有城市客单价都在跌，翻台能力决定抗跌程度。
   </div>
 </section>
 
@@ -1461,109 +1547,134 @@
     <div class="bg-data"></div>
     <div class="bg-scan"></div>
   </div>
-  <div class="section-eyebrow">Store Ranking</div>
-  <h2 class="section-title">门店排名 Top 10</h2>
+  <h2 class="section-title">门店维度分析</h2>
+  <div style="font-size:12px;color:var(--text-tertiary);margin-top:-36px;margin-bottom:36px;font-family:'Inter',sans-serif">按同比增长从高到低</div>
 
   <div class="table-wrap">
     <div class="table-header">
+      <span class="center">排名</span>
       <span>门店</span>
       <span class="center">城市</span>
-      <span class="center">线上纯收</span>
-      <span class="center">抖音占比</span>
-      <span class="center">美团客单</span>
-      <span class="center">抖音客单</span>
+      <span class="center">26年日均</span>
+      <span class="center">25年日均</span>
+      <span class="center">同比</span>
+      <span class="center">开台同比</span>
+      <span class="center">桌均同比</span>
     </div>
 
     <div class="table-row top-1">
-      <span class="table-cell name">河南郑州二七区万达店</span>
-      <span class="table-cell num center">郑州</span>
-      <span class="table-cell num center">129,893</span>
-      <span class="table-cell num center up">32.7%</span>
-      <span class="table-cell num center">213</span>
-      <span class="table-cell num center">216</span>
+      <span class="table-cell rank center">🥇</span>
+      <span class="table-cell name">济宁任城区万达店</span>
+      <span class="table-cell num center">济宁</span>
+      <span class="table-cell num center">21,424</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">16,240</span>
+      <span class="table-cell num center up">+31.9%</span>
+      <span class="table-cell num center">+67.7%</span>
+      <span class="table-cell num center">−21.3%</span>
     </div>
 
     <div class="table-row top-2">
-      <span class="table-cell name">天津津南区永旺梦乐城店</span>
-      <span class="table-cell num center">天津</span>
-      <span class="table-cell num center">128,627</span>
-      <span class="table-cell num center up">28.9%</span>
-      <span class="table-cell num center">243</span>
-      <span class="table-cell num center">225</span>
+      <span class="table-cell rank center">🥈</span>
+      <span class="table-cell name">沧州华北商厦店</span>
+      <span class="table-cell num center">沧州</span>
+      <span class="table-cell num center">23,934</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">22,008</span>
+      <span class="table-cell num center up">+8.8%</span>
+      <span class="table-cell num center">+29.4%</span>
+      <span class="table-cell num center">−16.0%</span>
     </div>
 
     <div class="table-row top-3">
-      <span class="table-cell name">河北沧州新华中路华北商厦店</span>
-      <span class="table-cell num center">沧州</span>
-      <span class="table-cell num center">126,419</span>
-      <span class="table-cell num center up">51.9%</span>
-      <span class="table-cell num center">219</span>
-      <span class="table-cell num center">235</span>
-    </div>
-
-    <div class="table-row">
-      <span class="table-cell name">山东济宁任城区万达店</span>
-      <span class="table-cell num center">济宁</span>
-      <span class="table-cell num center">118,615</span>
-      <span class="table-cell num center up">30.2%</span>
-      <span class="table-cell num center">202</span>
-      <span class="table-cell num center">200</span>
-    </div>
-
-    <div class="table-row">
-      <span class="table-cell name">北京顺义区华联金街店</span>
-      <span class="table-cell num center">北京</span>
-      <span class="table-cell num center">109,315</span>
-      <span class="table-cell num center up">27.9%</span>
-      <span class="table-cell num center">216</span>
-      <span class="table-cell num center">203</span>
-    </div>
-
-    <div class="table-row">
-      <span class="table-cell name">北京石景山区万达店</span>
-      <span class="table-cell num center">北京</span>
-      <span class="table-cell num center">105,989</span>
-      <span class="table-cell num center up">44.8%</span>
-      <span class="table-cell num center">226</span>
-      <span class="table-cell num center">222</span>
-    </div>
-
-    <div class="table-row">
-      <span class="table-cell name">湖北仙桃武商购物中心店</span>
-      <span class="table-cell num center">仙桃</span>
-      <span class="table-cell num center">103,834</span>
-      <span class="table-cell num center up">36.2%</span>
-      <span class="table-cell num center">254</span>
-      <span class="table-cell num center">259</span>
-    </div>
-
-    <div class="table-row">
-      <span class="table-cell name">河南信阳平桥区万达店</span>
+      <span class="table-cell rank center">🥉</span>
+      <span class="table-cell name">信阳平桥区万达店</span>
       <span class="table-cell num center">信阳</span>
-      <span class="table-cell num center">103,623</span>
-      <span class="table-cell num center up">49.1%</span>
-      <span class="table-cell num center">236</span>
-      <span class="table-cell num center">260</span>
+      <span class="table-cell num center">19,292</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">18,887</span>
+      <span class="table-cell num center up">+2.1%</span>
+      <span class="table-cell num center">+5.7%</span>
+      <span class="table-cell num center">−3.3%</span>
     </div>
 
     <div class="table-row">
-      <span class="table-cell name">河南新乡牧野区万达店</span>
-      <span class="table-cell num center">新乡</span>
-      <span class="table-cell num center">98,894</span>
-      <span class="table-cell num center up">72.2%</span>
-      <span class="table-cell num center">186</span>
-      <span class="table-cell num center">198</span>
+      <span class="table-cell rank center">4</span>
+      <span class="table-cell name">贵阳观山湖万象汇店</span>
+      <span class="table-cell num center">贵阳</span>
+      <span class="table-cell num center">19,323</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">19,689</span>
+      <span class="table-cell num center down">−1.9%</span>
+      <span class="table-cell num center">+2.1%</span>
+      <span class="table-cell num center">−3.9%</span>
     </div>
 
     <div class="table-row">
-      <span class="table-cell name">天津红桥区水游城店</span>
+      <span class="table-cell rank center">5</span>
+      <span class="table-cell name">天津津南永旺梦乐城店</span>
       <span class="table-cell num center">天津</span>
-      <span class="table-cell num center">98,516</span>
-      <span class="table-cell num center up">29.2%</span>
-      <span class="table-cell num center">241</span>
-      <span class="table-cell num center">206</span>
+      <span class="table-cell num center">21,657</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">22,898</span>
+      <span class="table-cell num center down">−5.4%</span>
+      <span class="table-cell num center">+22.1%</span>
+      <span class="table-cell num center">−22.5%</span>
     </div>
 
+    <div class="table-row">
+      <span class="table-cell rank center">6</span>
+      <span class="table-cell name">天水秦州区万达店</span>
+      <span class="table-cell num center">天水</span>
+      <span class="table-cell num center">18,161</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">20,442</span>
+      <span class="table-cell num center down">−11.2%</span>
+      <span class="table-cell num center">+1.1%</span>
+      <span class="table-cell num center">−12.1%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell rank center">7</span>
+      <span class="table-cell name">郑州二七区万达店</span>
+      <span class="table-cell num center">郑州</span>
+      <span class="table-cell num center">20,472</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">23,312</span>
+      <span class="table-cell num center down">−12.2%</span>
+      <span class="table-cell num center">+5.0%</span>
+      <span class="table-cell num center">−16.4%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell rank center">8</span>
+      <span class="table-cell name">仙桃武商购物中心店</span>
+      <span class="table-cell num center">仙桃</span>
+      <span class="table-cell num center">25,430</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">30,583</span>
+      <span class="table-cell num center down">−16.8%</span>
+      <span class="table-cell num center">−2.3%</span>
+      <span class="table-cell num center">−14.9%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell rank center">9</span>
+      <span class="table-cell name">乌兰察布集宁区万达店</span>
+      <span class="table-cell num center">乌兰察布</span>
+      <span class="table-cell num center">19,197</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">23,498</span>
+      <span class="table-cell num center down">−18.3%</span>
+      <span class="table-cell num center">+3.7%</span>
+      <span class="table-cell num center">−21.2%</span>
+    </div>
+
+    <div class="table-row">
+      <span class="table-cell rank center">10</span>
+      <span class="table-cell name">盐城射阳县吾悦广场店</span>
+      <span class="table-cell num center">盐城</span>
+      <span class="table-cell num center">20,780</span>
+      <span class="table-cell num center" style="color:var(--text-tertiary)">28,807</span>
+      <span class="table-cell num center down">−27.9%</span>
+      <span class="table-cell num center">−15.0%</span>
+      <span class="table-cell num center">−15.2%</span>
+    </div>
+
+  </div>
+  <div style="font-size:12px;color:var(--text-tertiary);margin-top:16px;line-height:1.6;padding:0 8px">
+    <span style="color:var(--green)">济宁</span>增长最猛（+31.9%），开台数暴涨67.7%，翻台驱动模式已验证；<span style="color:var(--red)">盐城</span>下滑最大（−27.9%），开台和客单双跌。前三名门店均靠大幅提升翻台弥补客单下降。
   </div>
 </section>
 
@@ -1575,38 +1686,37 @@
     <div class="bg-data"></div>
     <div class="bg-scan"></div>
   </div>
-  <div class="section-eyebrow">AI Action Plan</div>
   <h2 class="section-title">AI 诊断 · 行动建议</h2>
 
   <div class="action-grid">
     <div class="action-card">
       <span class="action-number">01</span>
-      <div class="action-title" style="color: var(--blue);">抖音要"拉新"不是"接盘"</div>
+      <div class="action-title">抖音做「增量」而非「替代」</div>
       <div class="action-desc">
-        抖音增长+149%但线上总收入仅+2.3%，抖音吃的全是美团流失的存量。<br>
-        <strong>行动：</strong>做抖音专属套餐（美团上没有的品），用"到店核销率"和"新客占比"两个指标考核，而非单纯GMV。
+        抖音+149%看起来很猛，但线上整体只涨了+2.3%，抖音吃的全是美团流失的存量。<br>
+        <strong>行动：</strong>推美团上没有的抖音专属套餐，控制折扣深度（建议8折以上），用「新客占比」和「复购率」两个指标替代单纯GMV考核，让抖音真正拉新客、做大蛋糕。
       </div>
-      <span class="action-impact blue">预计可带动线上增量+15%~25%</span>
+      <span class="action-impact">预期：线上净增量提升15%~25%</span>
     </div>
 
     <div class="action-card">
       <span class="action-number">02</span>
-      <div class="action-title" style="color: var(--green);">建立门店分级运营体系</div>
+      <div class="action-title">翻台攻坚：复制济宁模式</div>
       <div class="action-desc">
-        沧州单店12.6万 vs 佛山仅1,080元，店均差117倍。这不是品牌问题，是运营能力问题。<br>
-        <strong>行动：</strong>按线上收入将114家店分为S/A/B/C四级，C级店（月均<1万）输出标准化SOP，总部每周跟进整改。
+        济宁开台+67.7%带动营收+31.9%增长，而盐城开台−15%导致营收−27.9%——翻台是门店间最大的分水岭。<br>
+        <strong>行动：</strong>梳理开台数同比下降的门店，输出翻台优化SOP（等位转化、上菜动线、桌位周转），先在翻台提升空间最大的门店试点。
       </div>
-      <span class="action-impact green">C级店收入目标提升3~5倍</span>
+      <span class="action-impact">预期：下滑门店减亏50%~70%</span>
     </div>
 
     <div class="action-card">
       <span class="action-number">03</span>
-      <div class="action-title" style="color: var(--purple);">抖音空白门店快速铺开</div>
+      <div class="action-title">北京市场：紧急专项诊断</div>
       <div class="action-desc">
-        仍有10+门店抖音收入为0。在竞品已通过抖音翻倍增长的环境下，这些门店正在失去窗口期。<br>
-        <strong>行动：</strong>两周内完成所有空白门店的抖音团购上架，总部统一制作素材，单店只负责核销，降低门店执行门槛。
+        北京是唯一「开台+桌均」双降的城市（−31.6%），9家门店的规模下，问题大概率出在定位或竞争环境。<br>
+        <strong>行动：</strong>竞品菜品结构调研、门店周边客群画像、调整产品定价策略。北京作为品牌标杆市场，下滑必须优先解决。
       </div>
-      <span class="action-impact purple">预计新增抖音收入60~100万/年</span>
+      <span class="action-impact">预期：稳住在京门店基本盘</span>
     </div>
   </div>
 </section>
@@ -1614,15 +1724,102 @@
 <!-- ========== FOOTER ========== -->
 <footer class="footer">
   <p class="footer-brand">中科汇航 · <span>AI</span> Powered Analytics</p>
+  <p style="font-size:11px;color:var(--text-tertiary);margin-top:6px">聚焦本地 · 商赢未来 · 数据驱动餐饮增长</p>
 </footer>
 
 <script>
-// ===== Intersection Observer — 滚动触发动画 =====
+// ===== 鼠标流光线条效果 =====
+(function() {
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999';
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+
+  let points = [];
+  let mouseX = -100, mouseY = -100;
+
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // 添加当前鼠标位置
+    if (mouseX > 0) {
+      points.push({ x: mouseX, y: mouseY, life: 1 });
+    }
+    
+    // 限制点数量
+    if (points.length > 30) points.shift();
+    
+    // 绘制轨迹
+    if (points.length > 2) {
+      for (let i = 1; i < points.length; i++) {
+        const p = points[i];
+        const prev = points[i-1];
+        const alpha = (i / points.length) * 0.7;
+        const width = (i / points.length) * 4;
+        
+        ctx.beginPath();
+        ctx.moveTo(prev.x, prev.y);
+        ctx.lineTo(p.x, p.y);
+        ctx.strokeStyle = `rgba(41, 151, 255, ${alpha})`;
+        ctx.lineWidth = width;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+        
+        // 内层亮光
+        ctx.beginPath();
+        ctx.moveTo(prev.x, prev.y);
+        ctx.lineTo(p.x, p.y);
+        ctx.strokeStyle = `rgba(191, 90, 242, ${alpha * 0.5})`;
+        ctx.lineWidth = width * 0.5;
+        ctx.stroke();
+      }
+    }
+    
+    // 头部光晕
+    if (points.length > 0) {
+      const last = points[points.length - 1];
+      const grad = ctx.createRadialGradient(last.x, last.y, 0, last.x, last.y, 12);
+      grad.addColorStop(0, 'rgba(41,151,255,0.6)');
+      grad.addColorStop(0.5, 'rgba(191,90,242,0.2)');
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(last.x, last.y, 12, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ===== 滚动触发动画（每次滚入重新播放）=====
 let countUpTriggered = false;
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
+    } else {
+      entry.target.classList.remove('visible');
+      // 离开视口时重置动画标记（下次进入重新播放）
+      if (entry.target.classList.contains('kpi-grid')) {
+        countUpTriggered = false;
+      }
+      if (entry.target.classList.contains('insight-card') || entry.target.classList.contains('action-card')) {
+        delete entry.target.dataset.typingStarted;
+      }
     }
   });
   
